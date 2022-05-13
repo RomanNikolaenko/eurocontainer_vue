@@ -8,11 +8,7 @@ const prismic = createPrismic({
 				{
 					type: "home",
 					path: "/"
-				},
-				{
-					type: "recipes",
-					path: "/recipes/:uid"
-				},
+				}
 			]
 		},
 	},
