@@ -1,0 +1,23 @@
+@mixin property($property, $maxSize, $minSize, $mediaMin: true, $maxWidth: 1170, $minWidth: 320) {
+  @if $mediaMin {
+    #{$property}: calc(#{$minSize + px} + (#{$maxSize} - #{$minSize}) * ((100vw - #{$minWidth + px}) / (#{$maxWidth - $minWidth})));
+
+    @media (max-width: #{$minWidth + px}) {
+      #{$property}: #{$minSize + px};
+    }
+
+    @media (min-width: #{$maxWidth + px}) {
+      #{$property}: #{$maxSize + px};
+    }
+  }
+
+  @else {
+    @media (max-width: #{$maxWidth + px}) {
+      #{$property}: calc(#{$minSize + px} + (#{$maxSize} - #{$minSize}) * ((100vw - #{$minWidth + px}) / (#{$maxWidth - $minWidth})));
+    }
+  }
+}
+
+@mixin toRem($property, $value) {
+  #{$property}: calc($value / 16) + rem;
+}
