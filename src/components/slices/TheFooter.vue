@@ -2,7 +2,7 @@
   <footer v-if="phoneNumber" class="footer">
     <div class="footer_container container">
       <div class="footer_col">
-        fgdfgdf
+        <TheNav />
       </div>
 
       <div class="footer_col">
@@ -48,6 +48,7 @@ import {
   useSinglePrismicDocument,
 } from "@prismicio/vue";
 import ThePhoneNumber from "./ThePhoneNumber.vue";
+import TheNav from "./TheNav.vue";
 
 const { data: phoneNumber } = useSinglePrismicDocument("phonenumber");
 
@@ -95,7 +96,7 @@ function getDimensions() {
 
   &_container {
     display: grid;
-    row-gap: 30px;
+    @include property('row-gap', 30, 15, true, 1170, 1024);
     @include property('column-gap', 100, 30, true, 1170, 1024);
 
     @media (min-width: 1024px) {
@@ -111,6 +112,16 @@ function getDimensions() {
 
       @media (max-width: 1023.98px) {
         @include toRem('font-size', 21);
+        margin-top: -1rem;
+      }
+    }
+
+    >a {
+      @media (hover) {
+        &:hover {
+          text-decoration: none;
+          color: var(--blueDark);
+        }
       }
     }
   }

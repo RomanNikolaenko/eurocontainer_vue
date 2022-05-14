@@ -63,6 +63,13 @@ const props = defineProps({
       @media (max-width: 1023.98px) {
         @include toRem("font-size", 28);
       }
+
+      @media (hover) {
+        &:hover {
+          text-decoration: none;
+          color: var(--blueDark);
+        }
+      }
     }
 
     .form & {
@@ -72,6 +79,13 @@ const props = defineProps({
 
       @media (max-width: 1023.98px) {
         @include toRem("font-size", 28);
+      }
+
+      @media (hover) {
+        &:hover {
+          text-decoration: none;
+          color: var(--base);
+        }
       }
     }
   }
