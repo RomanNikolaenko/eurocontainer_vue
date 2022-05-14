@@ -9,16 +9,8 @@
             :field="slice.primary.textform"
             class="form_text"
           />
-          <div v-if="phoneNumber" class="form_wrap-links">
-            <PrismicLink
-              v-for="item in phoneNumber.data.links"
-              :key="item.linktext"
-              :field="item.link"
-              class="form_wrap-link"
-            >
-              {{ item.linktext }}
-            </PrismicLink>
-          </div>
+
+          <ThePhoneNumber />
         </div>
         <div class="form_wrap-col">
           <form class="form_form" @submit.prevent="handleSubmit">
@@ -81,9 +73,8 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import { getSliceComponentProps, useSinglePrismicDocument } from "@prismicio/vue";
-
-const { data: phoneNumber } = useSinglePrismicDocument("phonenumber");
+import { getSliceComponentProps } from "@prismicio/vue";
+import ThePhoneNumber from "./ThePhoneNumber.vue";
 
 // The array passed to `getSliceComponentProps` is purely optional and acts as a visual hint for you
 defineProps(getSliceComponentProps(["slice", "index", "slices", "context"]));
@@ -169,26 +160,6 @@ const handleSubmit = () => {
         &:nth-last-of-type(1) {
           order: -1;
         }
-      }
-    }
-
-    &-links {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    &-link {
-      color: var(--blueDark);
-      font-weight: 700;
-      @include toRem("font-size", 40);
-
-      @media (max-width: 1023.98px) {
-        @include toRem("font-size", 28);
-      }
-
-      &:not(:last-child) {
-        margin-bottom: 0.2rem;
       }
     }
   }

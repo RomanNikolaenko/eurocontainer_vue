@@ -10,12 +10,7 @@
           :alt="slice.primary.logofooter.alt" class="footer_logo" />
 
         <h3 class="footer_title">{{ slice.primary.contactsfooter }}</h3>
-        <div class="footer_contacts">
-          <PrismicLink v-for="item in phoneNumber.data.links" :key="item.linktext" :field="item.link"
-            class="footer_col-link">
-            {{ item.linktext }}
-          </PrismicLink>
-        </div>
+        <ThePhoneNumber :socials="true" />
 
         <h3 class="footer_title">{{ slice.primary.addresstitlefooter }}</h3>
         <p class="footer_text">{{ slice.primary.addresstextfooter }}</p>
@@ -52,6 +47,7 @@ import {
   getSliceComponentProps,
   useSinglePrismicDocument,
 } from "@prismicio/vue";
+import ThePhoneNumber from "./ThePhoneNumber.vue";
 
 const { data: phoneNumber } = useSinglePrismicDocument("phonenumber");
 
@@ -123,6 +119,7 @@ function getDimensions() {
     display: block;
     margin: 0 auto;
     max-width: 120px;
+    height: 100px;
   }
 
   &_title {
@@ -133,17 +130,6 @@ function getDimensions() {
 
   &_text {
     margin-bottom: 0;
-  }
-
-  &_contacts {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    @include toRem("font-size", 21);
-
-    @media (max-width: 1023.98px) {
-      @include toRem("font-size", 28);
-    }
   }
 
   &_map {
