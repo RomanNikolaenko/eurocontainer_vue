@@ -1,5 +1,5 @@
 <template>
-	<main v-if="home">
+	<main v-if="home" class="wrapper">
 		<h1>{{ $prismic.asText(home.data.title) }}</h1>
 		<h2>{{ $prismic.asText(home.data.description) }}</h2>
 
@@ -18,5 +18,6 @@ const components = defineSliceZoneComponents({
 	services: defineAsyncComponent(() => import("../components/slices/TheServices.vue")),
 	form: defineAsyncComponent(() => import("../components/slices/TheForm.vue")),
 	slider: defineAsyncComponent(() => import("../components/slices/TheSlider.vue")),
+	footer: defineAsyncComponent(() => import("../components/slices/TheFooter.vue")),
 });
 </script>

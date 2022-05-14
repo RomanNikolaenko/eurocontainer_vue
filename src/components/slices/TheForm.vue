@@ -9,14 +9,14 @@
             :field="slice.primary.textform"
             class="form_text"
           />
-          <div class="form_wrap-links">
+          <div v-if="phoneNumber" class="form_wrap-links">
             <PrismicLink
-              v-for="item in slice.items"
-              :key="item.linkformtext"
-              :field="item.linkform"
+              v-for="item in phoneNumber.data.links"
+              :key="item.linktext"
+              :field="item.link"
               class="form_wrap-link"
             >
-              {{ item.linkformtext }}
+              {{ item.linktext }}
             </PrismicLink>
           </div>
         </div>
@@ -81,7 +81,9 @@
 import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import { getSliceComponentProps } from "@prismicio/vue";
+import { getSliceComponentProps, useSinglePrismicDocument } from "@prismicio/vue";
+
+const { data: phoneNumber } = useSinglePrismicDocument("phonenumber");
 
 // The array passed to `getSliceComponentProps` is purely optional and acts as a visual hint for you
 defineProps(getSliceComponentProps(["slice", "index", "slices", "context"]));
