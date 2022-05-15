@@ -1,5 +1,5 @@
 <template>
-  <footer v-if="phoneNumber" class="footer">
+  <footer class="footer">
     <div class="footer_container container">
       <div class="footer_col">
         <TheNav />
@@ -45,12 +45,9 @@
 import { nextTick, onMounted, onUnmounted, reactive } from "vue";
 import {
   getSliceComponentProps,
-  useSinglePrismicDocument,
 } from "@prismicio/vue";
-import ThePhoneNumber from "./ThePhoneNumber.vue";
-import TheNav from "./TheNav.vue";
-
-const { data: phoneNumber } = useSinglePrismicDocument("phonenumber");
+import ThePhoneNumber from "../ThePhoneNumber.vue";
+import TheNav from "../TheNav.vue";
 
 // The array passed to `getSliceComponentProps` is purely optional and acts as a visual hint for you
 defineProps(getSliceComponentProps(["slice", "index", "slices", "context"]));

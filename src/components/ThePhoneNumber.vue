@@ -57,7 +57,8 @@ const props = defineProps({
       margin-bottom: 0.2rem;
     }
 
-    .footer & {
+    .footer &,
+    .headerM_collapse & {
       @include toRem("font-size", 21);
 
       @media (max-width: 1023.98px) {

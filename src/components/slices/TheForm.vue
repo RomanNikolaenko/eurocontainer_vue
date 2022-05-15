@@ -74,7 +74,7 @@ import { reactive } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { getSliceComponentProps } from "@prismicio/vue";
-import ThePhoneNumber from "./ThePhoneNumber.vue";
+import ThePhoneNumber from "../ThePhoneNumber.vue";
 
 // The array passed to `getSliceComponentProps` is purely optional and acts as a visual hint for you
 defineProps(getSliceComponentProps(["slice", "index", "slices", "context"]));

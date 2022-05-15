@@ -360,4 +360,7 @@ input[type="number"] {
 
 .wrapper {
   overflow: hidden;
+  background-image: url('@/assets/images/bg-landscape.jpg');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
