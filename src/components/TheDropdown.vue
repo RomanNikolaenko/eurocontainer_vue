@@ -91,6 +91,10 @@ document.addEventListener("click", (e) => {
       }
     }
 
+    .headerD & {
+      filter: drop-shadow(0 0 2px var(--base));
+    }
+
     .dropdown_fade & {
       margin-top: 0.5rem;
     }

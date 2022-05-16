@@ -1,32 +1,14 @@
 <template>
   <section class="services">
     <div class="services_container container">
-      <prismic-text
-        :field="slice.primary.titleservices"
-        wrapper="h2"
-        class="services_title"
-      />
+      <prismic-text :field="slice.primary.titleservices" wrapper="h2" class="services_title" />
 
-      <div class="card">
-        <div
-          v-for="item in slice.items"
-          :key="item.titleitem"
-          class="card_item"
-        >
-          <PrismicImage
-            v-if="item.img"
-            :field="item.img"
-            width="218"
-            height="150"
-            :alt="item.img.alt"
-            class="card_item-img"
-          />
-          <prismic-text
-            :field="item.titleitem"
-            wrapper="h3"
-            class="card_item-title"
-          />
-          <prismic-rich-text :field="item.lists" class="card_item-list" />
+      <div class="services_card">
+        <div v-for="item in slice.items" :key="item.titleitem" class="services_card-item">
+          <PrismicImage v-if="item.img" :field="item.img" width="218" height="150" :alt="item.img.alt"
+            class="services_card-img" />
+          <prismic-text :field="item.titleitem" wrapper="h3" class="services_card-title" />
+          <prismic-rich-text :field="item.lists" class="services_card-list" />
         </div>
       </div>
     </div>
@@ -59,24 +41,22 @@ defineProps(getSliceComponentProps(["slice", "index", "slices", "context"]));
       @include toRem("font-size", 24);
     }
   }
-}
 
-.card {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-content: center;
-  gap: 3rem 2rem;
+  &_card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    gap: 3rem 2rem;
 
-  @media (max-width: 1023.98px) {
-    gap: 2rem 1rem;
-    grid-template-columns: repeat(2, minmax(200px, 400px));
-  }
+    @media (max-width: 1023.98px) {
+      gap: 2rem 1rem;
+      grid-template-columns: repeat(2, minmax(200px, 400px));
+    }
 
-  @media (max-width: 575.98px) {
-    grid-template-columns: minmax(200px, 400px);
-  }
+    @media (max-width: 575.98px) {
+      grid-template-columns: minmax(200px, 400px);
+    }
 
-  &_item {
     &-img {
       @include property("max-height", 150, 100);
       margin-bottom: 0.75rem;
@@ -90,6 +70,7 @@ defineProps(getSliceComponentProps(["slice", "index", "slices", "context"]));
       text-transform: uppercase;
       margin-bottom: 0.75rem;
     }
+
     &-list {
       text-align: center;
       @include toRem("font-size", 18);
