@@ -15,7 +15,7 @@ import TheDropdown from "./TheDropdown.vue";
 
 <style lang="scss" scoped>
 .headerD {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;

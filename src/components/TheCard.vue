@@ -1,7 +1,7 @@
 <template>
   <div class="card_wrap">
-    <template v-for="card in props.data" :key="card.uid">
-      <div v-if="card.data.category == props.category" :key="componentKey" class="card">
+    <template v-for="card in dataCard" :key="card.uid">
+      <div v-if="card.data.category == props.category" :key="dataCard" class="card">
         <prismicText :field="card.data.title" wrapper="h2" class="card_title" />
 
         <template v-for="color in card.data.colors" :key="color.id">
@@ -33,22 +33,35 @@
           </PrismicLink>
         </div>
 
-        <button class="card_buy">Купити</button>
+        <button @click="buyContainer(true)" class="card_buy orangeBtn">Купити {{ count }}</button>
       </div>
     </template>
+
+    <Teleport to="body">
+      <transition name="modal">
+        <TheModalForm v-if="toggleModal" @close="buyContainer(false)" />
+      </transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import BaseIcon from './BaseIcon.vue';
+import TheModalForm from './TheModalForm.vue';
 
 const props = defineProps({
   data: { type: Object },
   category: { type: String }
 });
 
-const componentKey = ref(0);
+const dataCard = ref(props.data);
+let toggleModal = ref(false);
+
+let react = reactive({
+  dataCard,
+  toggleModal,
+});
 
 const toggleColor = (item, index) => {
   item.forEach((element, idx) => {
@@ -58,9 +71,24 @@ const toggleColor = (item, index) => {
       return element.checked = false;
     }
   });
-
-  componentKey.value++;
 }
+
+const buyContainer = (flag) => {
+  const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+
+  if (flag) {
+    document.body.classList.add('lock');
+    document.body.style.marginRight = lockMarginValue;
+    react.toggleModal = flag;
+  } else {
+    react.toggleModal = flag;
+    setTimeout(() => {
+      document.body.classList.remove('lock');
+      document.body.style.marginRight = null;
+    }, 300)
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -190,23 +218,16 @@ const toggleColor = (item, index) => {
       fill: currentColor;
     }
   }
+}
 
-  &_buy {
-    text-transform: uppercase;
-    @include toRem('font-size', 21);
-    padding: 10px 42px;
-    margin: 0 auto;
-    color: var(--white);
-    background-image: linear-gradient(to bottom, #fae490 0%, #f7c507 100%);
-    background-size: 100% 200%;
-    background-position-y: 100%;
+.modal-enter-active,
+.modal-leave-active {
+  transition: all .3s ease-in;
+}
 
-    @media (hover) {
-      &:hover {
-        background-position-y: 0;
-      }
-    }
-  }
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
 }
 
 .black {
