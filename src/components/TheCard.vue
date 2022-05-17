@@ -1,11 +1,11 @@
 <template>
   <div class="card_wrap">
-    <template v-for="card in dataCard" :key="card.uid">
-      <div v-if="card.data.category == props.category" :key="dataCard" class="card">
+    <template v-for="(card, idx) in dataCard" :key="idx">
+      <div v-if="card.data.category == props.category" class="card">
         <prismicText :field="card.data.title" wrapper="h2" class="card_title" />
 
         <template v-for="color in card.data.colors" :key="color.id">
-          <div v-if="color.checked" class="card_img-wrap">
+          <div v-if="color.checked" @click="detailsContainer(true, idx)" class="card_img-wrap">
             <div class="card_img-inner">
               <PrismicImage :field="color.img" width="330" height="330" :alt="color.img.alt || 'img'"
                 class="card_img" />
@@ -24,7 +24,17 @@
           <span>Країна виробник:</span> {{ card.data.country }}
         </div>
 
-        <button class="card_details">Детальніше</button>
+        <div class="card_price">
+          {{ card.data.price.toLocaleString('uk-UA') }} грн
+        </div>
+
+        <button @click="detailsContainer(true, idx)" class="card_details">Детальніше</button>
+
+        <Teleport to="body">
+          <transition name="modal">
+            <TheModalDetails v-if="toggleModalDetails && idx == idxDetails" :data="card.data" @close="detailsContainer(false)" />
+          </transition>
+        </Teleport>
 
         <div class="card_commercial">
           <PrismicLink :field="card.data.commercial" download target="_blank" class="card_commercial-btn">
@@ -33,22 +43,23 @@
           </PrismicLink>
         </div>
 
-        <button @click="buyContainer(true)" class="card_buy orangeBtn">Купити {{ count }}</button>
+        <button @click="buyContainer(true)" class="card_buy orangeBtn">Купити</button>
       </div>
     </template>
 
     <Teleport to="body">
       <transition name="modal">
-        <TheModalForm v-if="toggleModal" @close="buyContainer(false)" />
+        <TheModalForm v-if="toggleModalBuy" @close="buyContainer(false)" />
       </transition>
     </Teleport>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import BaseIcon from './BaseIcon.vue';
 import TheModalForm from './TheModalForm.vue';
+import TheModalDetails from './TheModalDetails.vue';
 
 const props = defineProps({
   data: { type: Object },
@@ -56,11 +67,15 @@ const props = defineProps({
 });
 
 const dataCard = ref(props.data);
-let toggleModal = ref(false);
+let toggleModalBuy = ref(false);
+let toggleModalDetails = ref(false);
+let idxDetails = ref(0);
 
 let react = reactive({
   dataCard,
-  toggleModal,
+  toggleModalBuy,
+  toggleModalDetails,
+  idxDetails,
 });
 
 const toggleColor = (item, index) => {
@@ -79,9 +94,9 @@ const buyContainer = (flag) => {
   if (flag) {
     document.body.classList.add('lock');
     document.body.style.marginRight = lockMarginValue;
-    react.toggleModal = flag;
+    react.toggleModalBuy = flag;
   } else {
-    react.toggleModal = flag;
+    react.toggleModalBuy = flag;
     setTimeout(() => {
       document.body.classList.remove('lock');
       document.body.style.marginRight = null;
@@ -89,6 +104,22 @@ const buyContainer = (flag) => {
   }
 }
 
+const detailsContainer = (flag, index) => {
+  const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+
+  if (flag) {
+    document.body.classList.add('hidden');
+    document.body.style.marginRight = lockMarginValue;
+    react.toggleModalDetails = flag;
+    react.idxDetails = index;
+  } else {
+    react.toggleModalDetails = flag;
+    setTimeout(() => {
+      document.body.classList.remove('hidden');
+      document.body.style.marginRight = null;
+    }, 300)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -160,6 +191,7 @@ const buyContainer = (flag) => {
       width: 100%;
       max-width: 365px;
       margin: 1rem auto 0;
+      cursor: pointer;
     }
 
     &-inner {
@@ -175,6 +207,14 @@ const buyContainer = (flag) => {
     span {
       font-weight: 700;
     }
+  }
+
+  &_price {
+    font-weight: 700;
+    @include toRem('font-size', 30);
+    text-align: center;
+    color: var(--blueDark);
+    margin-bottom: 1.2rem;
   }
 
   &_details {
@@ -228,41 +268,5 @@ const buyContainer = (flag) => {
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-}
-
-.black {
-  background-color: #000;
-}
-
-.blue {
-  background-color: #03f;
-}
-
-.brown {
-  background-color: #630;
-}
-
-.red {
-  background-color: #f33;
-}
-
-.orange {
-  background-color: #f93;
-}
-
-.green {
-  background-color: #696;
-}
-
-.yellow {
-  background-color: #ff6;
-}
-
-.white {
-  background-color: #fff;
-}
-
-.metallic {
-  background-image: linear-gradient(#d6d6d6, #545454);
 }
 </style>

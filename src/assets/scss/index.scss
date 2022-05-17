@@ -1,11 +1,11 @@
 :root {
-    --base: #212529;
-    --white: #ffffff;
-    --blueDark: #259eb3;
-    --bluePrimary: #4dbed2;
-    --blueLight: #81dded;
-    --grey: #cccccc;
-    --yellow: #f7c507;
+  --base: #212529;
+  --white: #ffffff;
+  --blueDark: #259eb3;
+  --bluePrimary: #4dbed2;
+  --blueLight: #81dded;
+  --grey: #cccccc;
+  --yellow: #f7c507;
 }
 
 @import "./fonts";
@@ -13,18 +13,54 @@
 @import "./reset";
 
 .orangeBtn {
-    text-transform: uppercase;
-    @include toRem('font-size', 21);
-    padding: 10px 42px;
-    margin: 0 auto;
-    color: var(--white);
-    background-image: linear-gradient(to bottom, #fae490 0%, #f7c507 100%);
-    background-size: 100% 200%;
-    background-position-y: 100%;
+  text-transform: uppercase;
+  @include toRem('font-size', 21);
+  padding: 10px 42px;
+  margin: 0 auto;
+  color: var(--white);
+  background-image: linear-gradient(to bottom, #fae490 0%, #f7c507 100%);
+  background-size: 100% 200%;
+  background-position-y: 100%;
 
-    @media (hover) {
-        &:hover {
-            background-position-y: 0;
-        }
+  @media (hover) {
+    &:hover {
+      background-position-y: 0;
     }
+  }
+}
+
+.black {
+  background-color: #000;
+}
+
+.blue {
+  background-color: #03f;
+}
+
+.brown {
+  background-color: #630;
+}
+
+.red {
+  background-color: #f33;
+}
+
+.orange {
+  background-color: #f93;
+}
+
+.green {
+  background-color: #696;
+}
+
+.yellow {
+  background-color: #ff6;
+}
+
+.white {
+  background-color: #fff;
+}
+
+.metallic {
+  background-image: linear-gradient(#d6d6d6, #545454);
 }

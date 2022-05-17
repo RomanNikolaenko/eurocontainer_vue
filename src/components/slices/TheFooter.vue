@@ -87,6 +87,7 @@ function getDimensions() {
 @import "@/assets/scss/mixins.scss";
 
 .footer {
+  overflow: hidden;
   background-image: linear-gradient(#d5eef3 0, var(--white) 70%);
   @include toRem("padding-top", 40);
   @include property('padding-bottom', 25, 0);
