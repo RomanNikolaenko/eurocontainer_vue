@@ -46,7 +46,7 @@ blockquote {
 p {
   margin-bottom: 1em;
 
-  &:nth-last-of-type(1) {
+  &:last-child {
     margin-bottom: 0;
   }
 }

@@ -15,6 +15,78 @@
       </div>
     </section>
 
+    <section class="category_wrap">
+      <div class="category container">
+        <h2 class="category_title">Контейнери для сміття</h2>
+        <div class="category_value">
+          <p class="category_value-num">1100 л</p>
+          <p class="category_value-text">Оцинковані нові</p>
+        </div>
+
+        <TheCard :data="cards" category="1100 metallic" />
+      </div>
+    </section>
+
+    <section class="category_wrap">
+      <div class="category container">
+        <h2 class="category_title">Контейнери для сміття</h2>
+        <div class="category_value">
+          <p class="category_value-num">1100 л</p>
+          <p class="category_value-text">Вживані</p>
+        </div>
+
+        <TheCard :data="cards" category="1100 used" />
+      </div>
+    </section>
+
+    <section class="category_wrap">
+      <div class="category container">
+        <h2 class="category_title">Контейнери для сміття</h2>
+        <div class="category_value">
+          <p class="category_value-num">750 л</p>
+          <p class="category_value-text">Метал</p>
+        </div>
+
+        <TheCard :data="cards" category="750" />
+      </div>
+    </section>
+
+    <section class="category_wrap">
+      <div class="category container">
+        <h2 class="category_title">Контейнери для роздільного збору сміття</h2>
+        <div class="category_value">
+          <p class="category_value-num">1100 л</p>
+          <p class="category_value-text">Оцінковані, метал, пластик</p>
+        </div>
+
+        <TheCard :data="cards" category="1100 separate" />
+      </div>
+    </section>
+
+    <section class="category_wrap">
+      <div class="category container">
+        <h2 class="category_title">Контейнери для сміття</h2>
+        <div class="category_value">
+          <p class="category_value-num">240 л</p>
+          <p class="category_value-text">з пластику</p>
+        </div>
+
+        <TheCard :data="cards" category="240" />
+      </div>
+    </section>
+
+    <section class="category_wrap">
+      <div class="category container">
+        <h2 class="category_title">Контейнери для сміття</h2>
+        <div class="category_value">
+          <p class="category_value-num">120 л</p>
+          <p class="category_value-text">з пластику</p>
+        </div>
+
+        <TheCard :data="cards" category="120" />
+      </div>
+    </section>
+
     <slice-zone :slices="home.data.body" :components="components" />
   </main>
 </template>
@@ -72,6 +144,8 @@ function getDimensions() {
 @import "@/assets/scss/mixins.scss";
 
 .category {
+  padding-top: 60px;
+  
   &_title {
     display: block;
     text-transform: uppercase;
@@ -89,7 +163,6 @@ function getDimensions() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 60px;
     padding-bottom: 30px;
 
     &-num {
@@ -138,10 +211,6 @@ function getDimensions() {
         @include toRem('font-size', 18);
       }
     }
-  }
-
-  &_wrap {
-    background-image: linear-gradient(#d5eef3 0, var(--white) 8%);
   }
 }
 </style>

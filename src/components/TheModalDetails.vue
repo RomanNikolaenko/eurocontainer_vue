@@ -45,12 +45,35 @@
             <h3 class="header-col_title">ХАРАКТЕРИСТИКИ:</h3>
 
             <ul class="header-col_list">
-              <li class="header-col_list-item"><strong>Країна виробник:</strong> Німеччина</li>
-              <li class="header-col_list-item"><strong>Країна виробник:</strong> Німеччина</li>
-              <li class="header-col_list-item"><strong>Країна виробник:</strong> Німеччина</li>
-              <li class="header-col_list-item"><strong>Країна виробник:</strong> Німеччина</li>
+              <li v-for="item in dataCard.modaldetailslist" :key="item.listtitle" class="header-col_list-item">
+                <strong>{{ item.listtitle }}:</strong> {{ item.listtext }}
+              </li>
             </ul>
           </div>
+        </div>
+
+        <div class="details-modal_wrap">
+          <div class="details-modal_description">
+            <prismicRichText v-if="$prismic.asText(dataCard.modaldescription)" :field="dataCard.modaldescription"
+              class="details-modal_description-text list" />
+            <prismicText v-if="$prismic.asText(dataCard.modaldescriptiontitle)" :field="dataCard.modaldescriptiontitle"
+              class="details-modal_description-text2" />
+          </div>
+
+          <ul v-if="dataCard.characteristics != false" class="details-modal_characteristics">
+            <li class="details-modal_characteristics-title">ХАРАКТЕРИСТИКИ</li>
+            <li v-for="item in dataCard.characteristics" :key="item.characteristicstitle"
+              class="details-modal_characteristics-item">
+              <span>{{ item.characteristicstitle }}</span>
+              <span>{{ item.characteristicstext }}</span>
+            </li>
+          </ul>
+
+          <prismicRichText v-if="$prismic.asText(dataCard.description)" :field="dataCard.description"
+            class="description-block list" />
+
+          <prismicRichText v-if="$prismic.asText(dataCard.benefits)" :field="dataCard.benefits"
+            class="benefits-block" />
         </div>
       </div>
     </div>
@@ -79,6 +102,105 @@ const toggleColor = (item, index) => {
   });
 }
 </script>
+
+<style lang="scss">
+@import "@/assets/scss/mixins.scss";
+
+.details-modal_description-text {
+  >* {
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  ul li {
+    font-weight: 700;
+  }
+}
+
+.description-block {
+  >*:nth-child(1) {
+    line-height: 2;
+    background: var(--blueDark);
+    text-align: center;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+
+    @include toRem('font-size', 26);
+
+    @media (max-width: 1023.98px) {
+      @include toRem('font-size', 21);
+    }
+  }
+}
+
+.benefits-block {
+  border: 5px solid var(--blueDark);
+  margin-top: 1rem;
+  padding: 15px 15px 15px 0;
+
+  @include toRem('font-size', 21);
+
+  @media (max-width: 1023.98px) {
+    @include toRem('font-size', 18);
+  }
+
+  >* {
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--blueDark)
+  }
+
+  ul {
+    list-style: inherit;
+    @include property('padding-left', 70, 25, true, 1170, 480);
+
+    li {
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  p {
+    font-weight: 700;
+    @include property('padding-left', 70, 25, true, 1170, 480);
+  }
+}
+
+.list {
+  ul {
+    @include property('padding-left', 70, 25, true, 1170, 480);
+
+    li {
+      position: relative;
+
+      &:not(:last-child) {
+        margin-bottom: 0.75rem;
+      }
+
+      &::before {
+        content: '✔';
+        position: absolute;
+        top: 0;
+        left: -25px;
+      }
+    }
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/mixins.scss";
@@ -146,6 +268,11 @@ const toggleColor = (item, index) => {
     @include property('font-size', 32, 21);
     text-align: center;
     margin-bottom: 2rem;
+  }
+
+  &_wrap {
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   &_header {
@@ -256,6 +383,71 @@ const toggleColor = (item, index) => {
   &_buy {
     margin: auto;
     display: block;
+  }
+
+  &_description {
+    margin-top: 1.25rem;
+    @include toRem('font-size', 21);
+
+    @media (max-width: 1023.98px) {
+      @include toRem('font-size', 18);
+    }
+
+    &-text2 {
+      margin-top: 1.25em;
+      padding: 5px;
+      text-align: center;
+      background-color: rgba(166, 230, 241, 0.561);
+      font-weight: 700;
+    }
+  }
+
+  &_characteristics {
+    margin-top: 2rem;
+    @include toRem('font-size', 21);
+
+    @media (max-width: 575.98px) {
+      @include toRem('font-size', 16);
+    }
+
+    &-title {
+      line-height: 2;
+      background: var(--blueDark);
+      text-align: center;
+      color: var(--white);
+      text-transform: uppercase;
+
+      @include toRem('font-size', 26);
+
+      @media (max-width: 1023.98px) {
+        @include toRem('font-size', 21);
+      }
+    }
+
+    &-item {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--blueDark);
+
+      >* {
+        display: block;
+        padding: 10px 15px;
+        flex: 0 0 50%;
+
+        &:first-child {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+.description-block {
+  margin-top: 2rem;
+  @include toRem('font-size', 21);
+
+  @media (max-width: 1023.98px) {
+    @include toRem('font-size', 18);
   }
 }
 
