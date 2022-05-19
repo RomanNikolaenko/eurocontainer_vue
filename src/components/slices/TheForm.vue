@@ -5,61 +5,35 @@
 
       <div class="form_wrap">
         <div class="form_wrap-col">
-          <prismic-rich-text
-            :field="slice.primary.textform"
-            class="form_text"
-          />
+          <prismic-rich-text :field="slice.primary.textform" class="form_text" />
 
           <ThePhoneNumber />
         </div>
+
         <div class="form_wrap-col">
           <form class="form_form" @submit.prevent="handleSubmit">
-            <label class="form_label">
-              <input
-                type="text"
-                v-model="$v.name.$model"
-                name="name"
-                :placeholder="slice.primary.inputname"
-              />
-              <span
-                v-if="$v.name.$dirty && !$v.name.required"
-                class="form_label-error"
-              >
+            <label :class="{ 'error': ($v.name.$dirty && $v.name.$error) }" class="form_label">
+              <input type="text" v-model.trim="$v.name.$model" name="name" :placeholder="slice.primary.inputname" />
+              <span v-if="$v.name.$dirty && $v.name.$error" class="form_label-error">
                 {{ slice.primary.inputnameerror }}
               </span>
             </label>
 
-            <label class="form_label">
-              <input
-                type="text"
-                v-model="$v.phone.$model"
-                name="phone"
-                :placeholder="slice.primary.inputphone"
-                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');"
-              />
-              <span
-                v-if="$v.phone.$dirty && !$v.phone.required"
-                class="form_label-error"
-              >
+            <label :class="{ 'error': ($v.phone.$dirty && $v.phone.$error) }" class="form_label">
+              <input type="number" v-model.trim="$v.phone.$model" name="phone" :placeholder="slice.primary.inputphone" />
+              <span v-if="$v.phone.$dirty && $v.phone.$error" class="form_label-error">
                 {{ slice.primary.inputphoneerror }}
               </span>
             </label>
 
-            <label class="form_label">
-              <textarea
-                v-model="$v.message.$model"
-                :placeholder="slice.primary.message"
-                name="message"
-              ></textarea>
-              <span
-                v-if="$v.message.$dirty && !$v.message.required"
-                class="form_label-error"
-              >
+            <label :class="{ 'error': ($v.message.$dirty && $v.message.$error) }" class="form_label">
+              <textarea v-model.trim="$v.message.$model" :placeholder="slice.primary.message" name="message"></textarea>
+              <span v-if="$v.message.$dirty && $v.message.$error" class="form_label-error">
                 {{ slice.primary.messageerror }}
               </span>
             </label>
 
-            <button class="form_submit">
+            <button type="submit" class="form_submit">
               {{ slice.primary.submit }}
             </button>
           </form>
@@ -94,10 +68,11 @@ const rules = {
 const $v = useVuelidate(rules, form);
 
 const handleSubmit = () => {
-  console.log("asdasd");
   $v.value.$touch();
 
-  if ($v.value.$invalid) return;
+  if ($v.value.$invalid) {
+    return
+  }
 };
 </script>
 
@@ -208,6 +183,22 @@ const handleSubmit = () => {
         background-color: var(--white);
         color: var(--blueDark);
       }
+    }
+  }
+
+  &_label {
+    &.error {
+      input,
+      textarea {
+        border-color: red;
+      }
+    }
+
+    &-error {
+      display: block;
+      margin-top: 0.3rem;
+      color: red;
+      padding: 0 15px;
     }
   }
 }

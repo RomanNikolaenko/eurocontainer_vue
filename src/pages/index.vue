@@ -3,7 +3,7 @@
     <TheHeaderDesktop v-if="!mobile.show" />
     <TheHeaderMobile v-else :data="home" />
 
-    <section class="category_wrap">
+    <section ref="div1" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -15,7 +15,7 @@
       </div>
     </section>
 
-    <section class="category_wrap">
+    <section ref="div2" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -27,7 +27,7 @@
       </div>
     </section>
 
-    <section class="category_wrap">
+    <section ref="div3" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -39,7 +39,7 @@
       </div>
     </section>
 
-    <section class="category_wrap">
+    <section ref="div4" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -51,7 +51,7 @@
       </div>
     </section>
 
-    <section class="category_wrap">
+    <section ref="div5" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для роздільного збору сміття</h2>
         <div class="category_value">
@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <section class="category_wrap">
+    <section ref="div6" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -75,7 +75,7 @@
       </div>
     </section>
 
-    <section class="category_wrap">
+    <section ref="div7" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -127,7 +127,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', getDimensions);
 });
 
-function getDimensions() {
+const getDimensions = () => {
   mobile.width = window.innerWidth;
 
   if (mobile.width < 1024) {
@@ -138,6 +138,13 @@ function getDimensions() {
 
   return mobile.show;
 }
+
+const goto = (refName) => {
+  const element = this.$refs[refName];
+  const top = element.offsetTop;
+
+  window.scrollTo(0, top);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -145,7 +152,7 @@ function getDimensions() {
 
 .category {
   padding-top: 60px;
-  
+
   &_title {
     display: block;
     text-transform: uppercase;

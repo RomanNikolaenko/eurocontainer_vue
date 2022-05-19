@@ -6,16 +6,27 @@
       <div class="modal_container">
         <h3 class="modal_title">Замовити контейнер</h3>
 
-        <form class="modal_form">
-          <label class="modal_form-label">
-            <input type="text" name="name" placeholder="Ім'я" />
+        <form @submit.prevent="handleSubmit" class="modal_form">
+          <label :class="{ 'error': ($v.name.$dirty && $v.name.$error) }" class="modal_form-label">
+            <input type="text" v-model.trim="$v.name.$model" name="name" placeholder="Ім'я" />
+            <span v-if="$v.name.$dirty && $v.name.$error" class="modal_form-error">
+              Обов'язкове поле
+            </span>
           </label>
-          <label class="modal_form-label">
-            <input type="text" name="phone" placeholder="Телефон"
-              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" />
+
+          <label :class="{ 'error': ($v.phone.$dirty && $v.phone.$error) }" class="modal_form-label">
+            <input type="number" v-model.trim="$v.phone.$model" name="phone" placeholder="Телефон" />
+            <span v-if="$v.phone.$dirty && $v.phone.$error" class="modal_form-error">
+              Обов'язкове поле
+            </span>
           </label>
-          <label class="modal_form-label">
-            <textarea name="message" placeholder="Напишіть, будь-ласка, коментар"></textarea>
+
+          <label :class="{ 'error': ($v.message.$dirty && $v.message.$error) }" class="modal_form-label">
+            <textarea v-model.trim="$v.message.$model" placeholder="Напишіть, будь-ласка, коментар"
+              name="message"></textarea>
+            <span v-if="$v.message.$dirty && $v.message.$error" class="modal_form-error">
+              Обов'язкове поле
+            </span>
           </label>
 
           <button type="submit" class="modal_form-submit orangeBtn">Надіслати</button>
@@ -26,7 +37,31 @@
 </template>
 
 <script setup>
+import { reactive } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
+const form = reactive({
+  name: "",
+  phone: "",
+  message: "",
+});
+
+const rules = {
+  name: { required },
+  phone: { required },
+  message: { required },
+};
+
+const $v = useVuelidate(rules, form);
+
+const handleSubmit = () => {
+  $v.value.$touch();
+
+  if ($v.value.$invalid) {
+    return
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -100,14 +135,31 @@
 
     &-label {
       display: flex;
+      flex-direction: column;
       margin-top: 1.2rem;
+
+      &.error {
+
+        input,
+        textarea {
+          border-color: red;
+        }
+      }
+    }
+
+    &-error {
+      display: block;
+      margin-top: 0.3rem;
+      color: red;
+      padding: 0 15px;
     }
 
     &-submit {
       margin-top: 1.2rem;
     }
 
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       border: 1px solid var(--grey);
       padding: 15px;
