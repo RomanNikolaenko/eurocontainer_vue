@@ -38,7 +38,7 @@
               </PrismicLink>
             </div>
 
-            <button class="details-modal_buy orangeBtn">Купити</button>
+            <button @click="$emit('buy')" class="details-modal_buy orangeBtn">Купити</button>
           </div>
 
           <div class="details-modal_header-col header-col">

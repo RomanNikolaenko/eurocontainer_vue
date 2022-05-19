@@ -32,7 +32,8 @@
 
         <Teleport to="body">
           <transition name="modal">
-            <TheModalDetails v-if="toggleModalDetails && idx == idxDetails" :data="card.data" @close="detailsContainer(false)" />
+            <TheModalDetails v-if="toggleModalDetails && idx == idxDetails" :data="card.data" @buy="buyContainer(true)"
+              @close="detailsContainer(false)" />
           </transition>
         </Teleport>
 
@@ -92,14 +93,18 @@ const buyContainer = (flag) => {
   const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
 
   if (flag) {
+    if (!document.body.classList.contains('hidden')) {
+      document.body.style.marginRight = lockMarginValue;
+    }
     document.body.classList.add('lock');
-    document.body.style.marginRight = lockMarginValue;
     react.toggleModalBuy = flag;
   } else {
     react.toggleModalBuy = flag;
     setTimeout(() => {
       document.body.classList.remove('lock');
-      document.body.style.marginRight = null;
+      if (!document.body.classList.contains('hidden')) {
+        document.body.style.marginRight = null;
+      }
     }, 300)
   }
 }
