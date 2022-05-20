@@ -3,6 +3,17 @@
     <TheHeaderDesktop v-if="!mobile.show" />
     <TheHeaderMobile v-else :data="home" />
 
+    <section class="hero">
+      <div class="hero_container container">
+        <div v-if="!mobile.show" class="hero_wrap">
+          <PrismicImage :field="home.data.logo" width="155" height="150" :alt="home.data.logo.alt || 'icon'" class="hero_img" />
+          <PrismicText :field="home.data.title" wrapper="h1" class="hero_title" />
+        </div>
+
+        <PrismicImage :field="home.data.imgcontainer" width="534" height="385" :alt="'home.data.img-container.alt' || 'icon'" class="hero_img-cont" />
+      </div>
+    </section>
+
     <section id="cont-1100" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
@@ -139,13 +150,6 @@ const getDimensions = () => {
   return mobile.show;
 }
 
-const goto = (refName) => {
-  const element = this.$refs[refName];
-  const top = element.offsetTop;
-
-  window.scrollTo(0, top);
-}
-
 const myEl = ref(null)
 const smoothScroll = inject('smoothScroll')
 const scrollToMyEl = () => {
@@ -227,6 +231,36 @@ const scrollToMyEl = () => {
         @include toRem('font-size', 18);
       }
     }
+  }
+}
+
+.hero {
+  @include property('padding-top', 110, 80);
+
+  &_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_img {
+    max-width: 155px;
+
+    &-cont {
+      display: block;
+      max-width: min(80%, 534px);
+      margin: 3rem auto 1rem;
+    }
+  }
+
+  &_title {
+    @include toRem('font-size', 56);
+    line-height: 1.2;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 30px;
+    color: #15156d;
+    max-width: 480px;
   }
 }
 </style>
