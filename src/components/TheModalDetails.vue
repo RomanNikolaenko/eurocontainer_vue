@@ -355,6 +355,7 @@ const toggleColor = (item, index) => {
     }
 
     &-svg {
+      width: 100%;
       fill: currentColor;
     }
   }

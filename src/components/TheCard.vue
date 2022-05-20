@@ -260,6 +260,7 @@ const detailsContainer = (flag, index) => {
     }
 
     &-svg {
+      width: 100%;
       fill: currentColor;
     }
   }
