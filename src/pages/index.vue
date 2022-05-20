@@ -7,7 +7,7 @@
       <div class="hero_container container">
         <div v-if="!mobile.show" class="hero_wrap">
           <PrismicImage :field="home.data.logo" width="155" height="150" :alt="home.data.logo.alt || 'icon'" class="hero_img" />
-          <PrismicText :field="home.data.title" wrapper="h1" class="hero_title" />
+          <PrismicRichText :field="home.data.title" class="hero_title" />
         </div>
 
         <PrismicImage :field="home.data.imgcontainer" width="534" height="385" :alt="'home.data.img-container.alt' || 'icon'" class="hero_img-cont" />
