@@ -9,5 +9,8 @@ import prismic from "./prismic";
 createApp(App)
   .use(router)
   .use(prismic)
-  .use(VueSmoothScroll)
+  .use(VueSmoothScroll, {
+    offset: -30,
+    updateHistory: false,
+  })
   .mount("#app");

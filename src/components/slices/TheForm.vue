@@ -1,5 +1,5 @@
 <template>
-  <section class="form">
+  <section id="contacts" class="form">
     <div class="form_container container">
       <prismic-rich-text :field="slice.primary.titleform" class="form_title" />
 

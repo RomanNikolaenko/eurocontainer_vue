@@ -1,5 +1,5 @@
 <template>
-  <section class="services">
+  <section id="service" class="services">
     <div class="services_container container">
       <prismic-text :field="slice.primary.titleservices" wrapper="h2" class="services_title" />
 

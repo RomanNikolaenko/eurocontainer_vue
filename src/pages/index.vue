@@ -3,7 +3,7 @@
     <TheHeaderDesktop v-if="!mobile.show" />
     <TheHeaderMobile v-else :data="home" />
 
-    <section ref="div1" class="category_wrap">
+    <section id="cont-1100" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -15,7 +15,7 @@
       </div>
     </section>
 
-    <section ref="div2" class="category_wrap">
+    <section id="sec-2" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -27,7 +27,7 @@
       </div>
     </section>
 
-    <section ref="div3" class="category_wrap">
+    <section id="sec-3" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -39,7 +39,7 @@
       </div>
     </section>
 
-    <section ref="div4" class="category_wrap">
+    <section id="cont-750" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -51,7 +51,7 @@
       </div>
     </section>
 
-    <section ref="div5" class="category_wrap">
+    <section id="cont-1100-separate" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для роздільного збору сміття</h2>
         <div class="category_value">
@@ -63,7 +63,7 @@
       </div>
     </section>
 
-    <section ref="div6" class="category_wrap">
+    <section id="cont-240" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -75,7 +75,7 @@
       </div>
     </section>
 
-    <section ref="div7" class="category_wrap">
+    <section id="cont-120" class="category_wrap">
       <div class="category container">
         <h2 class="category_title">Контейнери для сміття</h2>
         <div class="category_value">
@@ -93,7 +93,7 @@
 
 <script setup>
 import { defineSliceZoneComponents, useAllPrismicDocumentsByType, useSinglePrismicDocument } from "@prismicio/vue";
-import { defineAsyncComponent, nextTick, onMounted, onUnmounted, reactive } from "vue";
+import { defineAsyncComponent, nextTick, onMounted, onUnmounted, reactive, inject, ref } from "vue";
 import TheHeaderDesktop from "../components/TheHeaderDesktop.vue";
 import TheHeaderMobile from "../components/TheHeaderMobile.vue";
 import TheCard from "../components/TheCard.vue";
@@ -144,6 +144,15 @@ const goto = (refName) => {
   const top = element.offsetTop;
 
   window.scrollTo(0, top);
+}
+
+const myEl = ref(null)
+const smoothScroll = inject('smoothScroll')
+const scrollToMyEl = () => {
+  smoothScroll({
+    scrollTo: myEl.value,
+    hash: '#sampleHash'
+  })
 }
 </script>
 

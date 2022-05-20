@@ -2,9 +2,9 @@
   <nav v-if="links" class="nav">
     <prismic-text :field="links.data.title" />
 
-    <PrismicLink v-for="(item, i) in links.data.navs" :key="i" :field="item.link" @click.prevent="$emit('scroll')">
+    <a v-for="(item, i) in links.data.navs" :key="i" :href="`#${item.link}`" v-smooth-scroll>
       <prismic-rich-text :field="item.label" />
-    </PrismicLink>
+    </a>
   </nav>
 </template>
 
