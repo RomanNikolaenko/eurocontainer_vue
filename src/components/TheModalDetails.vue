@@ -4,11 +4,11 @@
       <button @click="$emit('close')" class="modal_close" aria-label="close"></button>
 
       <div class="modal_container details-modal">
-        <prismicText :field="dataCard.title" wrapper="h2" class="details-modal_title" />
+        <prismicText :field="DATA.dataCard.title" wrapper="h2" class="details-modal_title" />
 
         <div class="details-modal_header">
           <div class="details-modal_header-col">
-            <template v-for="color in dataCard.colors" :key="color.id">
+            <template v-for="color in DATA.dataCard.colors" :key="color.id">
               <div v-if="color.checked" @click="detailsContainer(true, idx)" class="details-modal_img-wrap">
                 <div class="details-modal_img-inner">
                   <PrismicImage :field="color.img" width="330" height="330" :alt="color.img.alt || 'img'"
@@ -20,7 +20,7 @@
 
           <div class="details-modal_header-col">
             <div class="details-modal_colors">
-              <template v-for="(color, index) in dataCard.colors" :key="color.select">
+              <template v-for="(color, index) in DATA.dataCard.colors" :key="color.select">
                 <button @click="toggleColor(data.colors, index)" :class="[color.select, color.checked ? 'active' : '']"
                   :aria-label="`color-${color.select}`" class="details-modal_colors-btn"></button>
               </template>
@@ -28,24 +28,24 @@
 
             <div class="details-modal_price">
               <span>Ціна:</span>
-              <strong>{{ dataCard.price.toLocaleString('uk-UA') }} грн з ПДВ</strong>
+              <strong>{{ DATA.dataCard.price.toLocaleString('uk-UA') }} грн з ПДВ</strong>
             </div>
 
             <div class="details-modal_commercial">
-              <PrismicLink :field="dataCard.commercial" download target="_blank" class="details-modal_commercial-btn">
+              <PrismicLink :field="DATA.dataCard.commercial" download target="_blank" class="details-modal_commercial-btn">
                 <BaseIcon class="details-modal_commercial-svg" name="commercial" viewBox="0 0 512 512" />
                 <span>Комерційна пропозиція</span>
               </PrismicLink>
             </div>
 
-            <button @click="$emit('buy')" class="details-modal_buy orangeBtn">Купити</button>
+            <button @click="emit('buyContainer', true)" class="details-modal_buy orangeBtn">Купити</button>
           </div>
 
           <div class="details-modal_header-col header-col">
             <h3 class="header-col_title">ХАРАКТЕРИСТИКИ:</h3>
 
             <ul class="header-col_list">
-              <li v-for="item in dataCard.modaldetailslist" :key="item.listtitle" class="header-col_list-item">
+              <li v-for="item in DATA.dataCard.modaldetailslist" :key="item.listtitle" class="header-col_list-item">
                 <strong>{{ item.listtitle }}:</strong> {{ item.listtext }}
               </li>
             </ul>
@@ -54,25 +54,25 @@
 
         <div class="details-modal_wrap">
           <div class="details-modal_description">
-            <prismicRichText v-if="$prismic.asText(dataCard.modaldescription)" :field="dataCard.modaldescription"
+            <prismicRichText v-if="$prismic.asText(DATA.dataCard.modaldescription)" :field="DATA.dataCard.modaldescription"
               class="details-modal_description-text list" />
-            <prismicText v-if="$prismic.asText(dataCard.modaldescriptiontitle)" :field="dataCard.modaldescriptiontitle"
+            <prismicText v-if="$prismic.asText(DATA.dataCard.modaldescriptiontitle)" :field="DATA.dataCard.modaldescriptiontitle"
               class="details-modal_description-text2" />
           </div>
 
-          <ul v-if="dataCard.characteristics != false" class="details-modal_characteristics">
+          <ul v-if="DATA.dataCard.characteristics != false" class="details-modal_characteristics">
             <li class="details-modal_characteristics-title">ХАРАКТЕРИСТИКИ</li>
-            <li v-for="item in dataCard.characteristics" :key="item.characteristicstitle"
+            <li v-for="item in DATA.dataCard.characteristics" :key="item.characteristicstitle"
               class="details-modal_characteristics-item">
               <span>{{ item.characteristicstitle }}</span>
               <span>{{ item.characteristicstext }}</span>
             </li>
           </ul>
 
-          <prismicRichText v-if="$prismic.asText(dataCard.description)" :field="dataCard.description"
+          <prismicRichText v-if="$prismic.asText(DATA.dataCard.description)" :field="DATA.dataCard.description"
             class="description-block list" />
 
-          <prismicRichText v-if="$prismic.asText(dataCard.benefits)" :field="dataCard.benefits"
+          <prismicRichText v-if="$prismic.asText(DATA.dataCard.benefits)" :field="DATA.dataCard.benefits"
             class="benefits-block" />
         </div>
       </div>
@@ -81,15 +81,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { defineEmits, reactive } from 'vue';
 import BaseIcon from './BaseIcon.vue';
 
 const props = defineProps(['data']);
 
-const dataCard = ref(props.data);
+const emit = defineEmits(['buyContainer']);
 
-let DATA = reactive({
-  dataCard,
+const DATA = reactive({
+  dataCard: props.data,
 });
 
 const toggleColor = (item, index) => {

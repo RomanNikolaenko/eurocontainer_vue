@@ -6,11 +6,13 @@
     <section class="hero">
       <div class="hero_container container">
         <div v-if="!mobile.show" class="hero_wrap">
-          <PrismicImage :field="home.data.logo" width="155" height="150" :alt="home.data.logo.alt || 'icon'" class="hero_img" />
+          <PrismicImage :field="home.data.logo" width="155" height="150" :alt="home.data.logo.alt || 'icon'"
+            class="hero_img" />
           <PrismicRichText :field="home.data.title" class="hero_title" />
         </div>
 
-        <PrismicImage :field="home.data.imgcontainer" width="534" height="385" :alt="'home.data.img-container.alt' || 'icon'" class="hero_img-cont" />
+        <PrismicImage :field="home.data.imgcontainer" width="534" height="385"
+          :alt="'home.data.img-container.alt' || 'icon'" class="hero_img-cont" />
       </div>
     </section>
 
@@ -22,7 +24,7 @@
           <p class="category_value-text">Пластикові нові</p>
         </div>
 
-        <TheCard :data="cards" category="1100 new" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="1100 new" />
       </div>
     </section>
 
@@ -34,7 +36,7 @@
           <p class="category_value-text">Оцинковані нові</p>
         </div>
 
-        <TheCard :data="cards" category="1100 metallic" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="1100 metallic" />
       </div>
     </section>
 
@@ -46,7 +48,7 @@
           <p class="category_value-text">Вживані</p>
         </div>
 
-        <TheCard :data="cards" category="1100 used" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="1100 used" />
       </div>
     </section>
 
@@ -58,7 +60,7 @@
           <p class="category_value-text">Метал</p>
         </div>
 
-        <TheCard :data="cards" category="750" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="750" />
       </div>
     </section>
 
@@ -70,7 +72,7 @@
           <p class="category_value-text">Оцінковані, метал, пластик</p>
         </div>
 
-        <TheCard :data="cards" category="1100 separate" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="1100 separate" />
       </div>
     </section>
 
@@ -82,7 +84,7 @@
           <p class="category_value-text">з пластику</p>
         </div>
 
-        <TheCard :data="cards" category="240" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="240" />
       </div>
     </section>
 
@@ -94,11 +96,22 @@
           <p class="category_value-text">з пластику</p>
         </div>
 
-        <TheCard :data="cards" category="120" />
+        <TheCard :data="cards" @buyContainer="buyContainer" @detailsContainer="detailsContainer" category="120" />
       </div>
     </section>
 
     <slice-zone :slices="home.data.body" :components="components" />
+
+    <Teleport to="body">
+      <transition name="modal">
+        <TheModalForm v-if="react.toggleModalBuy" @buyContainer="buyContainer" @close="buyContainer(false)" />
+      </transition>
+
+      <transition name="modal">
+        <TheModalDetails v-if="react.toggleModalDetails" :data="react.dataModal" @buyContainer="buyContainer(true)"
+          @close="detailsContainer(false)" />
+      </transition>
+    </Teleport>
   </main>
 </template>
 
@@ -108,6 +121,8 @@ import { defineAsyncComponent, nextTick, onMounted, onUnmounted, reactive, injec
 import TheHeaderDesktop from "../components/TheHeaderDesktop.vue";
 import TheHeaderMobile from "../components/TheHeaderMobile.vue";
 import TheCard from "../components/TheCard.vue";
+import TheModalDetails from "../components/TheModalDetails.vue";
+import TheModalForm from "../components/TheModalForm.vue";
 
 const { data: home } = useSinglePrismicDocument("home");
 const { data: cards } = useAllPrismicDocumentsByType("cards");
@@ -157,6 +172,50 @@ const scrollToMyEl = () => {
     scrollTo: myEl.value,
     hash: '#sampleHash'
   })
+}
+
+let react = reactive({
+  dataModal: [],
+  toggleModalBuy: false,
+  toggleModalDetails: false,
+});
+
+const buyContainer = (flag) => {
+  const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+
+  if (flag) {
+    if (!document.body.classList.contains('hidden')) {
+      document.body.style.marginRight = lockMarginValue;
+    }
+    document.body.classList.add('lock');
+    react.toggleModalBuy = flag;
+  } else {
+    react.toggleModalBuy = flag;
+    setTimeout(() => {
+      document.body.classList.remove('lock');
+      if (!document.body.classList.contains('hidden')) {
+        document.body.style.marginRight = null;
+      }
+    }, 300)
+  }
+}
+
+const detailsContainer = (data, flag) => {
+  const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+
+  if (flag) {
+    document.body.classList.add('hidden');
+    document.body.style.marginRight = lockMarginValue;
+    react.toggleModalDetails = flag;
+    react.dataModal = data;
+  } else {
+    react.toggleModalDetails = flag;
+    react.dataModal = []
+    setTimeout(() => {
+      document.body.classList.remove('hidden');
+      document.body.style.marginRight = null;
+    }, 300)
+  }
 }
 </script>
 
@@ -262,5 +321,15 @@ const scrollToMyEl = () => {
     color: #15156d;
     max-width: 480px;
   }
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: all .3s ease-in;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
 }
 </style>

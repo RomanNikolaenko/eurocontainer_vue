@@ -1,11 +1,11 @@
 <template>
   <div class="card_wrap">
-    <template v-for="(card, idx) in dataCard" :key="idx">
+    <template v-for="(card, idx) in react.dataCard" :key="idx">
       <div v-if="card.data.category == props.category" class="card">
         <prismicText :field="card.data.title" wrapper="h2" class="card_title" />
 
         <template v-for="color in card.data.colors" :key="color.id">
-          <div v-if="color.checked" @click="detailsContainer(true, idx)" class="card_img-wrap">
+          <div v-if="color.checked" @click="emit('detailsContainer', card.data, true)" class="card_img-wrap">
             <div class="card_img-inner">
               <PrismicImage :field="color.img" width="330" height="330" :alt="color.img.alt || 'img'"
                 class="card_img" />
@@ -28,14 +28,7 @@
           {{ card.data.price.toLocaleString('uk-UA') }} грн
         </div>
 
-        <button @click="detailsContainer(true, idx)" class="card_details">Детальніше</button>
-
-        <Teleport to="body">
-          <transition name="modal">
-            <TheModalDetails v-if="toggleModalDetails && idx == idxDetails" :data="card.data" @buy="buyContainer(true)"
-              @close="detailsContainer(false)" />
-          </transition>
-        </Teleport>
+        <button @click="emit('detailsContainer', card.data, true)" class="card_details">Детальніше</button>
 
         <div class="card_commercial">
           <PrismicLink :field="card.data.commercial" download target="_blank" class="card_commercial-btn">
@@ -44,40 +37,28 @@
           </PrismicLink>
         </div>
 
-        <button @click="buyContainer(true)" class="card_buy orangeBtn">Купити</button>
+        <button @click="emit('buyContainer', true)" class="card_buy orangeBtn">Купити</button>
       </div>
     </template>
 
-    <Teleport to="body">
-      <transition name="modal">
-        <TheModalForm v-if="toggleModalBuy" @close="buyContainer(false)" />
-      </transition>
-    </Teleport>
+    
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, defineEmits } from 'vue';
 import BaseIcon from './BaseIcon.vue';
-import TheModalForm from './TheModalForm.vue';
-import TheModalDetails from './TheModalDetails.vue';
 
 const props = defineProps({
   data: { type: Object },
   category: { type: String }
 });
 
-const dataCard = ref(props.data);
-let toggleModalBuy = ref(false);
-let toggleModalDetails = ref(false);
-let idxDetails = ref(0);
-
 let react = reactive({
-  dataCard,
-  toggleModalBuy,
-  toggleModalDetails,
-  idxDetails,
+  dataCard: props.data,
 });
+
+const emit = defineEmits(['buyContainer', 'detailsContainer']);
 
 const toggleColor = (item, index) => {
   item.forEach((element, idx) => {
@@ -87,43 +68,6 @@ const toggleColor = (item, index) => {
       return element.checked = false;
     }
   });
-}
-
-const buyContainer = (flag) => {
-  const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
-
-  if (flag) {
-    if (!document.body.classList.contains('hidden')) {
-      document.body.style.marginRight = lockMarginValue;
-    }
-    document.body.classList.add('lock');
-    react.toggleModalBuy = flag;
-  } else {
-    react.toggleModalBuy = flag;
-    setTimeout(() => {
-      document.body.classList.remove('lock');
-      if (!document.body.classList.contains('hidden')) {
-        document.body.style.marginRight = null;
-      }
-    }, 300)
-  }
-}
-
-const detailsContainer = (flag, index) => {
-  const lockMarginValue = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
-
-  if (flag) {
-    document.body.classList.add('hidden');
-    document.body.style.marginRight = lockMarginValue;
-    react.toggleModalDetails = flag;
-    react.idxDetails = index;
-  } else {
-    react.toggleModalDetails = flag;
-    setTimeout(() => {
-      document.body.classList.remove('hidden');
-      document.body.style.marginRight = null;
-    }, 300)
-  }
 }
 </script>
 
@@ -264,15 +208,5 @@ const detailsContainer = (flag, index) => {
       fill: currentColor;
     }
   }
-}
-
-.modal-enter-active,
-.modal-leave-active {
-  transition: all .3s ease-in;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
 }
 </style>
